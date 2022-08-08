@@ -1,0 +1,18 @@
+  public ProductCategoryResponseDTO convertToResponse(List<PhotoProductDTO> photo){
+
+        return ProductCategoryResponseDTO.builder()
+                .product_category_id(this.getProductCategoryId())
+                .product_name(this.getProduct().getProductName())
+                .price(this.getProduct().getPrice())
+                .produk_photos(photo)
+                .store_name(this.getProduct().getSeller().getStoreName())
+                .store_photo(this.getProduct().getSeller().getStorePhoto())
+                .seller_name(this.getProduct().getSeller().getUserId().getName())
+                .seller_username(this.getProduct().getSeller().getUserId().getUsername())
+                .store_address(this.getProduct().getSeller().getStoreAddress())
+                .category_name(this.getCategory().getName())
+                .product_description(this.getProduct().getDescription())
+                .createdAt(this.getCreatedAt())
+                .modifiedAt(this.getModifiedAt())
+                .build();
+    }

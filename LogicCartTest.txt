@@ -1,0 +1,29 @@
+Long orderId;
+        if(orderBuyerId.isPresent()){
+            Order order = orderBuyerId.get();
+            orderId = order.getOrderId();
+        }
+        List<OrderCartDTO> cartDTO = order.getListCart().stream()
+                .map(Cart::convertToOrder)
+                .collect(Collectors.toList());
+
+        OrderResponseDTO orderDTO = order.convertToResponse(cartDTO);
+
+        Long filter = cartRequestDTO.getBuyer_id();
+        Boolean filterlist = orderDTO.getListCart().stream()
+                .allMatch(Cart -> Cart.getBuyer_id().equals(filter));
+        Long orderIdCart;
+
+        if (filterlist) {
+           orderIdCart = orderDTO.getOrderId();
+        }else {
+            Order newOrder = new Order();
+            Long id = 1L;
+            Payment payment = paymentRepository.findById(id).orElseThrow(Exception::new);
+            Shipping shipping = shippingRepository.findById(id).orElseThrow(Exception::new);
+            newOrder.setShipping(shipping);
+            newOrder.setTotalprice(0);
+            newOrder.setPayment(payment);
+            Order saveOrder = orderRepository.save(newOrder);
+            orderIdCart = saveOrder.getOrderId();
+        }
