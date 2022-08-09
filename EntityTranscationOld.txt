@@ -1,0 +1,17 @@
+    public TransactionResponseDTO convertToResponse(List<CartResponseDTO> carts){
+        return TransactionResponseDTO.builder()
+                .transaction_id(this.getTransactionId())
+                .name_shipping(this.getNameShipping())
+                .address_shipping(this.getAddressShipping())
+                .zip_code(this.getZipCode())
+                .phone_shipping(this.getPhoneShipping())
+                .total_price(this.getOrder().getTotalprice())
+                .payment_name(this.getOrder().getPayment().getName())
+                .payment_code(this.getOrder().getPayment().getPaymentCode())
+                .shipping_name(this.getOrder().getShipping().getName())
+                .shipping_price(this.getOrder().getShipping().getPrice())
+                .carts(carts)
+                .created_at(this.getCreatedAt())
+                .modified_at(this.getModifiedAt())
+                .build();
+    }

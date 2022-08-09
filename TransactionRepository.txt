@@ -1,0 +1,8 @@
+@Repository
+public interface TransactionRepository extends JpaRepository<Transaction,Long> {
+    List<Transaction> findByOrderListCartBuyerUserNameIgnoreCaseContaining(String keyword);
+    List<Transaction> findByOrderListCartProductSellerUserIdNameIgnoreCaseContaining(String keyword);
+    List<Transaction> findByOrderListCartProductProductNameIgnoreCaseContaining(String keyword);
+//    List<Transaction> findByOrderListCartProductSellerUserIdNameOrOrderListCartBuyerUserName(String keyword);
+    List<Transaction> findAllByOrderByTransactionIdAsc();
+}
