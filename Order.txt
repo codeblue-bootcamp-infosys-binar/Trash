@@ -1,19 +1,33 @@
-//    public OrderResponsePost convertDTO(OrderResponseDTO orderRequestDTO){
-//        Optional<Payment> orderPayment = paymentRepository.findById(orderRequestDTO.getPayment_id());
-//        Payment payment = orderPayment.get();
-//        Optional<Shipping> orderShipping = shippingRepository.findById(orderRequestDTO.getShipping_id());
-//        Shipping shipping = orderShipping.get();
-//        return orderRequestDTO.();
-//    }
 
-//    @Override
-//    public OrderResponsePost createOrder(OrderRequestDTO orderRequestDTO) throws Exception {
-//        Optional<Payment> orderPayment = paymentRepository.findById(orderRequestDTO.getPaymentId());
-//        Optional<Shipping> orderShipping = shippingRepository.findById(orderRequestDTO.getShippingId());
-//        if(orderPayment.isEmpty() || orderShipping.isEmpty()){
-//            throw new Exception("Data not found");
-//        }
-//        Order newOrder = orderRequestDTO.convertToEntity(orderPayment.get(),orderShipping.get());
-//        orderRepository.save(newOrder);
-//        return newOrder.convertToResponsePost();
-//    }
+   public OrderResponsePost convertToResponsePost(){
+        return OrderResponsePost.builder()
+                .order_id(this.getOrderId())
+                .payment_id(this.getPayment().getPaymentId())
+                .payment_name(this.payment.getName())
+                .shipping_id(this.getShipping().getShippingId())
+                .shipping_name(this.getShipping().getName())
+                .createdAt(this.getCreatedAt())
+                .modifiedAt(this.getModifiedAt())
+                .build();
+    }
+
+ public OrderResponsePost convertDTO(OrderResponseDTO orderRequestDTO){
+        Optional<Payment> orderPayment = paymentRepository.findById(orderRequestDTO.getPayment_id());
+        Payment payment = orderPayment.get();
+        Optional<Shipping> orderShipping = shippingRepository.findById(orderRequestDTO.getShipping_id());
+        Shipping shipping = orderShipping.get();
+        return orderRequestDTO.();
+    }
+
+
+    @Override
+    public OrderResponsePost createOrder(OrderRequestDTO orderRequestDTO) throws Exception {
+        Optional<Payment> orderPayment = paymentRepository.findById(orderRequestDTO.getPaymentId());
+        Optional<Shipping> orderShipping = shippingRepository.findById(orderRequestDTO.getShippingId());
+        if(orderPayment.isEmpty() || orderShipping.isEmpty()){
+            throw new Exception("Data not found");
+        }
+        Order newOrder = orderRequestDTO.convertToEntity(orderPayment.get(),orderShipping.get());
+        orderRepository.save(newOrder);
+        return newOrder.convertToResponsePost();
+    }
