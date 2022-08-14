@@ -1,0 +1,25 @@
+    //GET ONE BY ID
+    @GetMapping("/sellers/{id}")
+    public ResponseEntity<Object> getSellerById(@PathVariable("id") Long id){
+        try{
+           SellerResponseDTO seller = sellerService.findSellerById(id);
+            logger.info(Line + "Logger Start Get By Id " + Line);
+            logger.info(String.valueOf(seller));
+            logger.info(Line + "Logger End Get By Id " + Line);
+//            List<Map<String, Object>> maps = new ArrayList<>();
+//            for(Seller sellerData : seller) {
+//                logger.info("==================== Logger Start Find By ID Users ====================");
+//                logger.info("ID       : " + sellerData.getSellerId());
+//                logger.info("Username : " + userResult.getUserName());
+//                logger.info("Email    : " + userResult.getEmailId());
+//                logger.info("==================== Logger End Find By ID Users   ====================");
+//                logger.info(" ");
+//            }
+            return ResponseHandler.generateResponse("successfully get by id", HttpStatus.OK, seller);
+        } catch (Exception e){
+            logger.error(Line + " Logger Start Error " + Line);
+            logger.error(e.getMessage());
+            logger.error(Line + " Logger End Error " + Line);
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, "Seller had no value");
+        }
+    }
