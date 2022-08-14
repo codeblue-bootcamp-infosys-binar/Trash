@@ -1,0 +1,40 @@
+    //UPDATE
+    @PutMapping("/user/buyers/update/{id}")
+    public ResponseEntity<Object> updateBuyer(@RequestBody BuyerRequestDTO buyer, @PathVariable("id") Long id){
+        try{
+            BuyerResponseDTO updateBuyer = buyerService.updateBuyer(buyer,id);
+            logger.info(Line + "Logger Start Update By Id " + Line);
+            logger.info(String.valueOf(updateBuyer));
+            logger.info(Line + "Logger End Update By Id " + Line);
+            return ResponseHandler.generateResponse("successfully updated Buyer", HttpStatus.OK, updateBuyer);
+        } catch (Exception e){
+            logger.error(Line + " Logger Start Error " + Line);
+            logger.error(e.getMessage());
+            logger.error(Line + " Logger End Error " + Line);
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, "Failed update buyer!");
+        }
+    }
+
+    @Override
+    public BuyerResponseDTO updateBuyer(BuyerRequestDTO buyer,Long id)throws Exception {
+        Buyer targetBuyer = buyerRepository.findById(id).orElseThrow(()->new Exception("Buyer not found"));
+        User user = userRepository.findById(buyer.getUser_id()).orElseThrow(() -> new Exception("Buyer not found"));
+        return buyerRepository.save(buyer.convertToEntity(user)).convertToResponse();
+    }
+
+    //GET ONE BY ID
+    @GetMapping("/buyers/{id}")
+    public ResponseEntity<Object> getBuyerById(@PathVariable("id") Long id){
+        try{
+            BuyerResponseDTO buyer = buyerService.findBuyerById(id);
+            logger.info(Line + "Logger Start Get By Id " + Line);
+            logger.info(String.valueOf(buyer));
+            logger.info(Line + "Logger End Get By Id " + Line);
+            return ResponseHandler.generateResponse("success get by id", HttpStatus.OK, buyer);
+        } catch (Exception e){
+            logger.error(Line + " Logger Start Error " + Line);
+            logger.error(e.getMessage());
+            logger.error(Line + " Logger End Error " + Line);
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.NOT_FOUND, "Buyer no value!");
+        }
+    }
